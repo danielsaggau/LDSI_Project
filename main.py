@@ -1,6 +1,7 @@
 import pandas as pd
 import tensorflow as tf
 from transformers import DistilBertTokenizer, DistilBertConfig, DistilBertModel, GPT2Tokenizer, TFDistilBertPreTrainedModel, TFGPT2LMHeadModel
+import datetime
 
 desired_width=1020
 pd.set_option('display.width', desired_width)
@@ -14,10 +15,34 @@ plain_text = data['plain_text']
 author = data['author']
 url = data['download_url']
 html = data['html']
-
-# converting series to list or str
-
+id = data['id']
+# converting series to list
+id = list(id)
 plain_text = list(plain_text)
+
+documents_by_id = {data['id']: d for d in data['plain_text']}
+doc_lengths = [len(data['plain_text']) for id in data()]
+
+data['plain_text'].str.len()
+
+#remove docs without any pages
+data_filtered = data_filtered[~data_filtered['page_count'].isnull()]
+
+data = data('\s+', ' ', regex=True)
+
+
+
+
+data_filtered['plain_text'] = dat_filtered['plain_text'].str[60:]
+
+plain_text = data_filtered['plain_text']
+#plain_text = plain_text.str.strip()
+#plain_text = plain_text.str[700:]
+plain_text = plain_text.str.replace("  ","")
+
+plt.hist(doc_lengths, bins=50)
+plt.show()
+
 
 # need to fix cleaning function
 # cleaning
@@ -29,6 +54,10 @@ def clean(plain_text):
 
 clean_text = clean(plain_text)
 
+
+cases_df['date_filed'] = pd.to_datetime(cases_df.date_filed)
+cases_df['year_filed'] = cases_df.date_filed.map(lambda x: x.year)
+cases_df['year_filed'] = cases_df.year_filed.astype(int)
 
 # encoding
 tokenizer_gpt = GPT2Tokenizer.from_pretrained("gpt2")
