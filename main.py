@@ -26,40 +26,35 @@ doc_lengths = [len(data['plain_text']) for id in data()]
 
 doc_length = data_filtered['plain_text'].str.len()
 
-#remove docs without any pages
-data_filtered = data[~data['page_count'].isnull()]
-#data_filtered['plain_text'] = dat_filtered['plain_text'].str[60:]
-
-plain_text = data_filtered['plain_text']
-#plain_text = plain_text.str.strip()
-#plain_text = plain_text.str[700:]
-
-# removing whitespaces
-plain_text = plain_text.str.replace("  ","")
+data_filtered = data[~data['page_count'].isnull()] # remove empty pages
+plain_text = data_filtered['plain_text'] # subset
+plain_text = plain_text.str.replace("  ","") # removing whitespaces
 
 data['date_filed'] = pd.to_datetime(data['date_created'])
 data['year_filed'] = data.date_filed.map(lambda x: x.year)
 data['year_filed'] = data.year_filed.astype(int)
 
+
+# create sequence based on text
+
+
+
 # encoding
 tokenizer_gpt = GPT2Tokenizer.from_pretrained("gpt2")
 #inputs = tokenizer_gpt.encode(plain_text, return_tensors = 'tf', truncation = True)
-inputs = tokenizer_gpt(text, truncation=True)
-# fix max length error
+plain_text = list(plain_text)
+inputs = tokenizer_gpt(plain_text, truncation=True) # fix max length error
 
 plain_text = list(plain_text)
 
 lines = plain_text.str.split('\n')
 # organize into sequences of tokens
 length = 255 + 1
-sequences = list()
-for i in range(length, len(tokens)):
-	# select sequence of tokens
+lines = list()
+for i in range(length, len(inputs)):
 	seq = tokens[i-length:i]
-	# convert into a line
 	line = ' '.join(seq)
-	# store
-	sequences.append(line)
+	lines.append(line)
 print('Total Sequences: %d' % len(sequences))
 
 # save sequences to file
