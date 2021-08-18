@@ -2,6 +2,7 @@ import pandas as pd
 import tensorflow as tf
 from transformers import DistilBertTokenizer, DistilBertConfig, DistilBertModel, GPT2Tokenizer, TFDistilBertPreTrainedModel, TFGPT2LMHeadModel
 import datetime
+import matplotlib.pyplot as plt
 
 desired_width=1020
 pd.set_option('display.width', desired_width)
@@ -18,52 +19,52 @@ html = data['html']
 id = data['id']
 # converting series to list
 id = list(id)
-plain_text = list(plain_text)
+
 
 documents_by_id = {data['id']: d for d in data['plain_text']}
 doc_lengths = [len(data['plain_text']) for id in data()]
 
-data['plain_text'].str.len()
+doc_length = data_filtered['plain_text'].str.len()
 
 #remove docs without any pages
-data_filtered = data_filtered[~data_filtered['page_count'].isnull()]
-
-data = data('\s+', ' ', regex=True)
-
-
-
-
-data_filtered['plain_text'] = dat_filtered['plain_text'].str[60:]
+data_filtered = data[~data['page_count'].isnull()]
+#data_filtered['plain_text'] = dat_filtered['plain_text'].str[60:]
 
 plain_text = data_filtered['plain_text']
 #plain_text = plain_text.str.strip()
 #plain_text = plain_text.str[700:]
+
+# removing whitespaces
 plain_text = plain_text.str.replace("  ","")
 
-plt.hist(doc_lengths, bins=50)
-plt.show()
-
-
-# need to fix cleaning function
-# cleaning
-def clean(plain_text):
-    rep={
-        '\s +':' '                      #remove whitespace
-    }
-    return plain_text
-
-clean_text = clean(plain_text)
-
-
-cases_df['date_filed'] = pd.to_datetime(cases_df.date_filed)
-cases_df['year_filed'] = cases_df.date_filed.map(lambda x: x.year)
-cases_df['year_filed'] = cases_df.year_filed.astype(int)
+data['date_filed'] = pd.to_datetime(data['date_created'])
+data['year_filed'] = data.date_filed.map(lambda x: x.year)
+data['year_filed'] = data.year_filed.astype(int)
 
 # encoding
 tokenizer_gpt = GPT2Tokenizer.from_pretrained("gpt2")
 #inputs = tokenizer_gpt.encode(plain_text, return_tensors = 'tf', truncation = True)
 inputs = tokenizer_gpt(text, truncation=True)
 # fix max length error
+
+plain_text = list(plain_text)
+
+lines = plain_text.str.split('\n')
+# organize into sequences of tokens
+length = 255 + 1
+sequences = list()
+for i in range(length, len(tokens)):
+	# select sequence of tokens
+	seq = tokens[i-length:i]
+	# convert into a line
+	line = ' '.join(seq)
+	# store
+	sequences.append(line)
+print('Total Sequences: %d' % len(sequences))
+
+# save sequences to file
+out_filename = 'republic_sequences.txt'
+save_doc(sequences, out_filename)
 
 def make_tfdataset(encodings):
     return tf.data.Dataset.from_tensor_slices(dict(encodings))
@@ -109,11 +110,14 @@ for i, sample_output in enumerate(sample_outputs):
 # Flesch–Kincaid readability score
 
 
+
+
+# Roberta- Comparison
+
 # Performance Evaluation
 
 # ROUGE
 
 # BLEU
-
 
 # BLEURT
