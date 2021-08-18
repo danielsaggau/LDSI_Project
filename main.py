@@ -1,42 +1,37 @@
 import pandas as pd
 import tensorflow as tf
 from transformers import DistilBertTokenizer, DistilBertConfig, DistilBertModel, GPT2Tokenizer, TFDistilBertPreTrainedModel, TFGPT2LMHeadModel
-import datetime
-import matplotlib.pyplot as plt
+from keras.preprocessing.text import text_to_word_sequence
 
-desired_width=1020
-pd.set_option('display.width', desired_width)
-pd.set_option('display.max.columns',25)
+# set seed
 
+# load data
 data = pd.read_pickle("/Users/danielsaggau/PycharmProjects/pythonProject/opinions_data.pkl")
-data.info()
-data.describe()
-
 plain_text = data['plain_text']
 author = data['author']
 url = data['download_url']
 html = data['html']
 id = data['id']
-# converting series to list
-id = list(id)
-
-
-documents_by_id = {data['id']: d for d in data['plain_text']}
-doc_lengths = [len(data['plain_text']) for id in data()]
-
-doc_length = data_filtered['plain_text'].str.len()
 
 data_filtered = data[~data['page_count'].isnull()] # remove empty pages
+doc_length = data_filtered['plain_text'].str.len()
 plain_text = data_filtered['plain_text'] # subset
 plain_text = plain_text.str.replace("  ","") # removing whitespaces
+
+text = plain_text.str.replace("FILED", "")
+text = text.str.replace("NOT FOR PUBLICATION", "")
+text = text.str.replace("UNITED STATES COURT OF APPEALS", "")
+text = text.str.replace("U.S. COURT OF APPEALS", "")
+text = text.str.replace("U.S. COURT OF APPEALS", "")
+
 
 data['date_filed'] = pd.to_datetime(data['date_created'])
 data['year_filed'] = data.date_filed.map(lambda x: x.year)
 data['year_filed'] = data.year_filed.astype(int)
 
-
-# create sequence based on text
-
+# convert to sequences
+# doubtful this is smart/necessary
+text = plain_text.apply(text_to_word_sequence)
 
 
 # encoding
@@ -47,15 +42,6 @@ inputs = tokenizer_gpt(plain_text, truncation=True) # fix max length error
 
 plain_text = list(plain_text)
 
-lines = plain_text.str.split('\n')
-# organize into sequences of tokens
-length = 255 + 1
-lines = list()
-for i in range(length, len(inputs)):
-	seq = tokens[i-length:i]
-	line = ' '.join(seq)
-	lines.append(line)
-print('Total Sequences: %d' % len(sequences))
 
 # save sequences to file
 out_filename = 'republic_sequences.txt'
@@ -104,10 +90,6 @@ for i, sample_output in enumerate(sample_outputs):
 
 # Flesch–Kincaid readability score
 
-
-
-
-# Roberta- Comparison
 
 # Performance Evaluation
 

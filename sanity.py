@@ -1,3 +1,14 @@
+desired_width=1020
+pd.set_option('display.width', desired_width)
+pd.set_option('display.max.columns',25)
+
+#documents_by_id = {data['id']: d for d in data['plain_text']}
+doc_lengths = [len(data['plain_text']) for id in data()]
+
+
+data.info()
+data.describe()
+
 # sanity check: dates and case titles
 checks = [83,1065,4508]
 for c in checks:
