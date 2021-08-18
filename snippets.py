@@ -19,11 +19,17 @@ for i in range(length, len(text)):
 	seq.append(line)
 print('Total Sequences: %d' % len(seq))
 
+# save sequences to file
+out_filename = 'republic_sequences.txt'
+save_doc(sequences, out_filename)
+
 # alternative snippet
+
+
 #https://stackabuse.com/python-for-nlp-deep-learning-text-generation-with-keras/
 input_sequence = []
 output_words = []
-input_seq_length = 100
+input_seq_length = 255
 
 for i in range(0, n_words - input_seq_length , 1):
     in_seq = macbeth_text_words[i:i + input_seq_length]
