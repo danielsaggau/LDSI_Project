@@ -51,7 +51,14 @@ def make_sequence:
 
 
 # spacy detect sentence boundaries
+#reference
+from __future__ import unicode_literals, print_function
+from spacy.en import English
 
+raw_text = 'Hello, world. Here are two sentences.'
+nlp = English()
+doc = nlp(raw_text)
+sentences = [sent.string.strip() for sent in doc.sents]
 
 
 # encoding
