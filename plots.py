@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-plt.hist(data['year_filed'], bins=50)
+#plt.pie(data_filtered['per_curiam'])
 plt.hist(data['year_filed'])
 plt.show()
 
