@@ -1,3 +1,8 @@
+
+# create txt
+# https://stackoverflow.com/questions/48831802/outputting-pandas-series-to-txt-file
+plain_text.to_csv('/Users/danielsaggau/PycharmProjects/pythonProject/output.txt', sep=' ', index=False)
+
 #import datetime
 
 lines = plain_text.str.split('\n')

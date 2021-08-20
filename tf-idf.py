@@ -4,6 +4,8 @@ from sklearn.feature_extraction import DictVectorizer
 from sklearn.feature_extraction.text import TfidfVectorizer
 import numpy as np
 
+# http://www.ultravioletanalytics.com/blog/tf-idf-basics-with-pandas-scikit-learn
+
 from sklearn.feature_extraction.text import TfidfVectorizer
 ngramrange = (1,2)
 tvec = TfidfVectorizer(min_df=.0025, max_df=.1, stop_words='english', ngram_range=ngramrange)

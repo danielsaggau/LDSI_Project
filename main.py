@@ -1,9 +1,10 @@
+from __future__ import unicode_literals, print_function
 import pandas as pd
 import tensorflow as tf
 from transformers import DistilBertTokenizer, DistilBertConfig, DistilBertModel, GPT2Tokenizer, TFDistilBertPreTrainedModel, TFGPT2LMHeadModel
 from keras.preprocessing.text import text_to_word_sequence
-import spaCy
-
+from spacy.lang.en import English
+from sklearn import model_selection
 # set seed
 
 # load data
@@ -19,21 +20,22 @@ doc_length = data_filtered['plain_text'].str.len()
 plain_text = data_filtered['plain_text'] # subset
 plain_text = plain_text.str.replace("  ","") # removing whitespaces
 
+text = plain_text
     #text = text.str.replace("\n", " ")
-    text = plain_text.str.replace("FILED", "")
-    text = text.str.replace("NOT FOR PUBLICATION", "")
-    text = text.str.replace("FOR PUBLICATION", "")
-    text = text.str.replace("FOR PUBLICATION\n", "")
-    text = text.str.replace("UNITED STATES COURT OF APPEALS", "")
-    text = text.str.replace("U.S. COURT OF APPEALS", "")
-    text = text.str.replace("U .S. COURT OF APPEALS", "")
-    text = text.str.replace("U .S. COURT OF APPEALS", "")
-    text = text.str.replace("UNITED STATES OF AMERICA", "")
-    text = text.str.replace("\x0c","")
-    text = text.str.replace("\uf8fc","")
-    text = text.str.replace("\uf8fd","")
-    text = text.str.replace("FOR THE NINTH CIRCUIT", "")
-    text = text.str.replace("Appeal from the United States District Court", "")
+text = text.str.replace("FILED", "")
+text = text.str.replace("NOT FOR PUBLICATION", "")
+text = text.str.replace("FOR PUBLICATION", "")
+text = text.str.replace("FOR PUBLICATION\n", "")
+text = text.str.replace("UNITED STATES COURT OF APPEALS", "")
+text = text.str.replace("U.S. COURT OF APPEALS", "")
+text = text.str.replace("U .S. COURT OF APPEALS", "")
+text = text.str.replace("U .S. COURT OF APPEALS", "")
+text = text.str.replace("UNITED STATES OF AMERICA", "")
+text = text.str.replace("\x0c","")
+text = text.str.replace("\uf8fc","")
+text = text.str.replace("\uf8fd","")
+text = text.str.replace("FOR THE NINTH CIRCUIT", "")
+text = text.str.replace("Appeal from the United States District Court", "")
 
 data['date'] = pd.to_datetime(data['date_created'])
 data['year'] = data.date.map(lambda x: x.year)
@@ -51,14 +53,11 @@ def make_sequence:
 
 # spacy detect sentence boundaries
 #reference
-from __future__ import unicode_literals, print_function
-from spacy.en import English
 
-raw_text = 'Hello, world. Here are two sentences.'
 nlp = English()
-doc = nlp(raw_text)
-sentences = [sent.string.strip() for sent in doc.sents]
-
+doc = nlp(plain_text)
+nlp_plain_text = plain_text.apply(lambda x: nlp(x))
+sentences = [sent.string.strip() for sent in nlp_plain_text]
 
 # encoding
 tokenizer_gpt = GPT2Tokenizer.from_pretrained("gpt2")
@@ -69,9 +68,6 @@ tokenizer_gpt = GPT2Tokenizer.from_pretrained("gpt2")
 tokenizer_gpt.fit_on_texts(plain_text)
 #vocabulary:
 print(tokenizer.word_index)
-
-
-
 
 
 plain_text = list(plain_text)
@@ -92,10 +88,9 @@ tf_data = inputs.shuffle(len(plain_text)) # check for mistake
 data_train = tf_data.take(train)
 data_test = tf_data.skip(train)
 
-train_spans, test_spans = model_selection.train_test_split(plain_text,
-                                                           test_size=.2,
-                                                           random_state=42)
-train_spans_txt = [s['txt'] for s in train_spans]
-test_spans_txt = [s['txt'] for s in test_spans]
+train, test = model_selection.train_test_split(
+    plain_text,
+    test_size=0.2,
+    random_state=42)
 
 # ensure that training and test set dont differ and set unmatched tokens to <unk>
