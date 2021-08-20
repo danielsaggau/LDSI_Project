@@ -3,9 +3,6 @@ from __future__ import division
 from __future__ import print_function
 
 from collections import Counter, OrderedDict
-from tensorflow.gfile import Open as open
-from tensorflow.gfile import Exists as exists
-
 
 class Vocab(object):
     def __init__(self, special=[], min_freq=0, max_size=None, lower_case=True,
@@ -39,10 +36,11 @@ class Vocab(object):
 
     def count_file(self, path, verbose=False, add_eos=False):
         if verbose: print('counting file {} ...'.format(path))
-        assert exists(path)
+        assert Exists(path)
 
         sents = []
-        with open(path, 'r') as f:
+
+    with Open(path, 'r') as f:
             for idx, line in enumerate(f):
                 if verbose and idx > 0 and idx % 500000 == 0:
                     print('  line {}'.format(idx))
@@ -50,7 +48,7 @@ class Vocab(object):
                 self.counter.update(symbols)
                 sents.append(symbols)
 
-        return sents
+    return sents
 
     def count_sents(self, sents, verbose=False):
         """
@@ -66,7 +64,7 @@ class Vocab(object):
         self.idx2sym = []
         self.sym2idx = OrderedDict()
 
-        with open(vocab_file, 'r') as f:
+        with Open(vocab_file, 'r') as f:
             for line in f:
                 symb = line.strip().split()[0]
                 self.add_symbol(symb)
@@ -99,9 +97,9 @@ class Vocab(object):
     def encode_file(self, path, ordered=False, verbose=False, add_eos=True,
                     add_double_eos=False):
         if verbose: print('encoding file {} ...'.format(path))
-        assert exists(path)
+        assert Exists(path)
         encoded = []
-        with open(path, 'r') as f:
+        with Open(path, 'r') as f:
             for idx, line in enumerate(f):
                 if verbose and idx > 0 and idx % 500000 == 0:
                     print('  line {}'.format(idx))
