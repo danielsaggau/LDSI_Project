@@ -36,3 +36,31 @@ for i in range(0, n_words - input_seq_length , 1):
     out_seq = macbeth_text_words[i + input_seq_length]
     input_sequence.append([word_2_index[word] for word in in_seq])
     output_words.append(word_2_index[out_seq])
+
+	#
+	def top_features_in_doc(Xtr, features, row_id, top_n=15):
+		''' Top tfidf features in specific document (matrix row) '''
+		xtr_row = Xtr[row_id]
+		if type(xtr_row) is not np.ndarray:
+			xtr_row = xtr_row.toarray()
+		row = np.squeeze(xtr_row)
+		return top_tfidf_features(row, features, top_n)
+
+
+	def span_top_tfidf(spans_txt, spans_tfidf, features, index):
+		print('span text:\n' + spans_txt[index] + '\n')
+		print(top_features_in_doc(spans_tfidf, features, index))
+
+
+	vectorizer = TfidfVectorizer(min_df=3)
+	vectorizer = vectorizer.fit(plain_text)
+	tfidf_features_skl = vectorizer.get_feature_names()
+
+	train_tfidf_skl = vectorizer.transform(plain_text).toarray()
+	train_spans_labels = np.array([s['type'] for s in plain_text])
+
+	train_tfidf_skl.shape
+
+	span_top_tfidf(train_tfidf_skl,
+				   tfidf_features_skl,
+				   random.randint(0, len(train_spans)))

@@ -3,6 +3,7 @@ import tensorflow as tf
 from transformers import DistilBertTokenizer, DistilBertConfig, DistilBertModel, GPT2Tokenizer, TFDistilBertPreTrainedModel, TFGPT2LMHeadModel
 from keras.preprocessing.text import text_to_word_sequence
 import spaCy
+
 # set seed
 
 # load data
@@ -18,7 +19,7 @@ doc_length = data_filtered['plain_text'].str.len()
 plain_text = data_filtered['plain_text'] # subset
 plain_text = plain_text.str.replace("  ","") # removing whitespaces
 
-    text = text.str.replace("\n", " ")
+    #text = text.str.replace("\n", " ")
     text = plain_text.str.replace("FILED", "")
     text = text.str.replace("NOT FOR PUBLICATION", "")
     text = text.str.replace("FOR PUBLICATION", "")
@@ -39,8 +40,6 @@ data['year'] = data.date.map(lambda x: x.year)
 data['year'] = data.year.astype(int)
 
 
-# doubtful this is smart/necessary
-text = plain_text.apply(text_to_word_sequence)
 
 # convert to sequences
 input_sequence = []
@@ -66,6 +65,15 @@ tokenizer_gpt = GPT2Tokenizer.from_pretrained("gpt2")
 
 #inputs = tokenizer_gpt.encode(plain_text, return_tensors = 'tf', truncation = True)
 
+
+tokenizer_gpt.fit_on_texts(plain_text)
+#vocabulary:
+print(tokenizer.word_index)
+
+
+
+
+
 plain_text = list(plain_text)
 inputs = tokenizer_gpt(text, truncation=True return_tensors ='tf') # fix max length error
 inputs = text.apply(tokenizer_gpt)
@@ -83,3 +91,11 @@ train = int(len(plain_text) * 1- test)
 tf_data = inputs.shuffle(len(plain_text)) # check for mistake
 data_train = tf_data.take(train)
 data_test = tf_data.skip(train)
+
+train_spans, test_spans = model_selection.train_test_split(plain_text,
+                                                           test_size=.2,
+                                                           random_state=42)
+train_spans_txt = [s['txt'] for s in train_spans]
+test_spans_txt = [s['txt'] for s in test_spans]
+
+# ensure that training and test set dont differ and set unmatched tokens to <unk>
