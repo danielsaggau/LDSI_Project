@@ -90,9 +90,5 @@ tf_data = inputs.shuffle(len(plain_text)) # check for mistake
 data_train = tf_data.take(train)
 data_test = tf_data.skip(train)
 
-train, test = model_selection.train_test_split(
-    plain_text,
-    test_size=0.2,
-    random_state=42)
 
 # ensure that training and test set dont differ and set unmatched tokens to <unk>
