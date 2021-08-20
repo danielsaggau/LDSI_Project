@@ -10,10 +10,10 @@ BEGINNING_LEN = 1
 
 print("Reading document")
 raw_text = open("/Users/danielsaggau/PycharmProjects/pythonProject/output.txt", "r", encoding='utf8').read()
+raw_text = open("/Users/danielsaggau/PycharmProjects/pythonProject/output.txt", "r").read()
 nlp.add_pipe('sentencizer')
 
 doc = nlp(raw_text[:1000000])
-
 
 def join_tokens(text_in):
     text_out = u" " + ' '.join(text_in)

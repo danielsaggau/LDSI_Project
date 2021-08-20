@@ -9,6 +9,8 @@ from sklearn import model_selection
 
 # load data
 data = pd.read_pickle("/Users/danielsaggau/PycharmProjects/pythonProject/opinions_data.pkl")
+
+
 plain_text = data['plain_text']
 author = data['author']
 url = data['download_url']
