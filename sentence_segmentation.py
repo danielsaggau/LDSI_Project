@@ -6,8 +6,6 @@ MIN_SENTENCE_LEN = 10
 NUM_SENTENCES = 4
 BEGINNING_LEN = 1
 
-
-
 print("Reading document")
 raw_text = open("/Users/danielsaggau/PycharmProjects/pythonProject/output.txt", "r", encoding='utf8').read()
 raw_text = open("/Users/danielsaggau/PycharmProjects/pythonProject/output.txt", "r").read()
