@@ -1,15 +1,18 @@
 import io
-print("Initializing spaCy")
-nlp = English()
+from spacy.lang.en import English
+import pandas as pd
+import spacy
+from spacy.lang.en.examples import sentences
+spacy.cli.download("en_core_web_sm")
+nlp = spacy.load('en_core_web_sm')
 NUM_EXPERIMENTS = 100
 MIN_SENTENCE_LEN = 10
 NUM_SENTENCES = 4
 BEGINNING_LEN = 1
 
-print("Reading document")
-raw_text = io.open("/Users/danielsaggau/PycharmProjects/pythonProject/output.txt", "r").read()
-nlp.add_pipe('sentencizer')
-doc = nlp(raw_text[:1000000]) # max value
+raw_text = io.open("/Users/danielsaggau/PycharmProjects/pythonProject/output.txt", encoding='utf8',"r").read()
+doc = nlp(raw_text[:1000000])
+# max value
 
 def join_tokens(text_in):
     text_out = u" " + ' '.join(text_in)
@@ -17,7 +20,6 @@ def join_tokens(text_in):
         text_out = text_out.replace(u"  ", u" ")
     return text_out
 
-print("Start")
 sentences = []
 sentence_group = []
 sentences_beginning = []
