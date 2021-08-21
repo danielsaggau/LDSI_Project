@@ -1,6 +1,6 @@
 # encoding
 tokenizer_gpt = GPT2Tokenizer.from_pretrained("gpt2")
-#inputs = tokenizer_gpt.encode(plain_text, return_tensors = 'tf', truncation = True)
+inputs = tokenizer_gpt.encode(raw_text, return_tensors = 'tf', truncation = True)
 inputs = tokenizer_gpt(text, truncation=True)
 # fix max length error
 
@@ -18,21 +18,14 @@ data_test = tf_data.skip(train)
 
 # Instantiate Model
 
-model_gpt = TFGPT2LMHeadModel.from_pretrained("distilgpt2", pad_token_id=tokenizer.eos_token_id)
-
-model_gpt.train(text,
-         line_by_line=False,
-         num_steps=36000,
-         generate_every=1000,
-         save_every=1000,
-         learning_rate=1e-4,
-         batch_size=2,
-         )
+model_gpt = TFGPT2LMHeadModel.from_pretrained("distilgpt2", pad_token_id=tokenizer_gpt.eos_token_id)
 
 # Generate Text
+greedy_output = model_gpt.generate(inputs, max_length=100)
+
 
 sample_outputs = model_gpt.generate(
-    input_ids_gpt,
+    inputs,
     do_sample=True,
     max_length=256,
     batch_size=2,

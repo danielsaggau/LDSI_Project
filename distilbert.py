@@ -1,13 +1,16 @@
 # https://colab.research.google.com/github/peterbayerle/huggingface_notebook/blob/main/distilbert_tf.ipynb#scrollTo=rVU_LoASQMcp
 N_EPOCHS = 2
-
-model_bert = TFGPT2LMHeadModel.from_pretrained("distilgpt2", pad_token_id=tkzr.eos_token_id)
+model_gpt = TFGPT2LMHeadModel.from_pretrained("distilgpt2", pad_token_id=tokenizer.eos_token_id)
 optimizer = optimizers.Adam(learning_rate=3e-5)
 loss = losses.SparseCategoricalCrossentropy(from_logits=True)
-model_bert.compile(optimizer=optimizer, loss=loss, metrics=['accuracy'])
-model_bert.fit(tfdataset_train, batch_size=BATCH_SIZE, epochs=N_EPOCHS)
+model_gpt.compile(optimizer=optimizer, loss=loss, metrics=['accuracy'])
+model_gpt.fit(raw_text, batch_size=BATCH_SIZE, epochs=N_EPOCHS)
+
 
 input_ids = tkzr.encode(x, return_tensors="tf")
+
+for sent in doc.sents:
+    tkzr.encode(sent, return_tensors="tf")
 
 greedy_output = model_bert.generate(input_ids, max_length=100)
 print("Output:\n" + 100 * '-')

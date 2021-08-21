@@ -1,0 +1,6 @@
+tokenizer = GPT2Tokenizer.from_pretrained('gpt2')
+input_ids = tokenizer.encode("However, none of those sources contains a single definition of juvenile offence", return_tensors ="tf")
+model = TFGPT2LMHeadModel.from_pretrained("distilgpt2", pad_token_id=tokenizer_gpt.eos_token_id)
+greedy_output = model.generate(input_ids, max_length=300)
+print("Output:\n" + 100 * '-')
+print(tokenizer.decode(greedy_output[0], skip_special_tokens=True))

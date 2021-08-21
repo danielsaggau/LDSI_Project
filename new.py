@@ -1,6 +1,9 @@
-for token in doc.sents:
-    sentence_text = []
-    sentence_text.append(token.text)
+
+
+for token in sent:
+        sentence_text = []
+        sentence_text.append(token.text)
+
 sentence_len = len(sentence_text)
 sentence_text = join_tokens(sentence_text)
 

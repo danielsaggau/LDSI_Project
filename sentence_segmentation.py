@@ -8,14 +8,13 @@ random.seed(10)
 # download english directory for pycharm
 spacy.cli.download("en_core_web_sm")
 nlp = spacy.load('en_core_web_sm')
-nlp.add_pipe(se)
 # select number of sentences : identical to selection by Lazar
-NUM_EXPERIMENTS = 50
+NUM_EXPERIMENTS = 500
 MIN_SENTENCE_LEN = 10
 NUM_SENTENCES = 4
 BEGINNING_LEN = 1
 
-raw_text = open("/data/output.txt", "r").read()
+raw_text = open("/Users/danielsaggau/PycharmProjects/pythonProject/data/output.txt", "r").read()
 #doc = nlp(raw_text[1000000:2000000])
 doc = nlp(raw_text[:1000000])
 

@@ -17,7 +17,7 @@ for sent in doc.sents:
 if sentence_len > MIN_SENTENCE_LEN or '\n' in sentence_text:
 file.append()
 
-for doc in doc_sents:
+for token in doc_sents:
     sentence_text = []
     for token in doc:
         sentence_text.append(token.text)
