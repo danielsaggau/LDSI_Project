@@ -12,10 +12,11 @@ from tensorflow.gfile import MakeDirs as makedirs
 
 from vocabulary import Vocab
 
-data = pd.read_csv('/Users/danielsaggau/PycharmProjects/pythonProject/okey.csv')
+data = pd.read_csv('/Users/danielsaggau/PycharmProjects/pythonProject/working_sentence_split.csv')
 
 train, test = model_selection.train_test_split(
     data,
+    train_size = 0.8,
     test_size=0.2,
     random_state=42)
 

@@ -2,9 +2,9 @@ from __future__ import unicode_literals, print_function
 import pandas as pd
 import tensorflow as tf
 from transformers import DistilBertTokenizer, DistilBertConfig, DistilBertModel, GPT2Tokenizer, TFDistilBertPreTrainedModel, TFGPT2LMHeadModel
-from keras.preprocessing.text import text_to_word_sequence
+#from keras.preprocessing.text import text_to_word_sequence
 from spacy.lang.en import English
-from sklearn import model_selection
+#from sklearn import model_selection
 # set seed
 
 # load data
@@ -16,6 +16,7 @@ author = data['author']
 url = data['download_url']
 html = data['html']
 id = data['id']
+
 
 data_filtered = data[~data['page_count'].isnull()] # remove empty pages
 doc_length = data_filtered['plain_text'].str.len()
@@ -43,12 +44,21 @@ data['date'] = pd.to_datetime(data['date_created'])
 data['year'] = data.date.map(lambda x: x.year)
 data['year'] = data.year.astype(int)
 
+# save as txt
+text.to_csv('/Users/danielsaggau/PycharmProjects/pythonProject/output.txt', sep=' ', index=False)
+# load text
+raw_text = io.open("/Users/danielsaggau/PycharmProjects/pythonProject/output.txt", "r", encoding='utf8').read()
 
+nlp = English()
+nlp.add_pipe('sentencizer')
+doc = nlp(raw_text[:1000000]) # max value
 
-# convert to sequences
-input_sequence = []
-output_words = []
-input_seq_length = 255
+sents_list = []
+for sent in doc.sents:
+   sents_list.append(sent.text)
+
+print(sents_list)
+print([token.text for token in doc])
 
 def make_sequence:
 

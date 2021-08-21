@@ -7,11 +7,9 @@ NUM_SENTENCES = 4
 BEGINNING_LEN = 1
 
 print("Reading document")
-raw_text = open("/Users/danielsaggau/PycharmProjects/pythonProject/output.txt", "r", encoding='utf8').read()
-raw_text = open("/Users/danielsaggau/PycharmProjects/pythonProject/output.txt", "r").read()
+raw_text = io.open("/Users/danielsaggau/PycharmProjects/pythonProject/output.txt", "r").read()
 nlp.add_pipe('sentencizer')
-
-doc = nlp(raw_text[:1000000])
+doc = nlp(raw_text[:1000000]) # max value
 
 def join_tokens(text_in):
     text_out = u" " + ' '.join(text_in)
@@ -52,4 +50,4 @@ export_to_csv = True
 if export_to_csv:
     output_dict = {"beginning": sentences_beginning, "true_end": sentences_end}
     output_df = pd.DataFrame(output_dict, columns=["beginning", "true_end"])
-    output_df.to_csv('/Users/danielsaggau/PycharmProjects/pythonProject/okey.csv', index=False, header=True)
+    output_df.to_csv('/Users/danielsaggau/PycharmProjects/pythonProject/sentences.csv', index=False, header=True)
