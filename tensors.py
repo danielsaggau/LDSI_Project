@@ -1,42 +1,42 @@
-tf.enable_eager_execution()
-training_dataset = (
-    tf.data.Dataset.from_tensor_slices(
-        (
-            tf.cast(training_df[features].values, tf.float32),
-            tf.cast(training_df['target'].values, tf.int32)
-        )
-    )
-)
-
-
-
-
-
 import numpy as np
 import pandas as pd
 import tensorflow as tf
+from tensorflow.keras import activations, optimizers, losses
+from transformers import DistilBertTokenizer, TFDistilBertForSequenceClassification
+import io
 
-tf.enable_eager_execution()
+data = pd.read_csv("/Users/danielsaggau/PycharmProjects/pythonProject/data/working_sentence_split.csv")
+MODEL_NAME = 'distilbert-base-uncased'
+tkzr = DistilBertTokenizer.from_pretrained(MODEL_NAME)
+def construct_encodings(x, tkzr, max_len, trucation=True, padding=True):
+    return tkzr(x, max_length=max_len, truncation=trucation, padding=padding)
 
-training_df: pd.DataFrame = pd.DataFrame(
-    data={
-        'feature1': np.random.rand(10),
-        'feature2': np.random.rand(10),
-        'feature3': np.random.rand(10),
-        'target': np.random.randint(0, 3, 10)
-    }
-)
-features = ['feature1', 'feature2', 'feature3']
-print(training_df)
 
-training_dataset = (
-    tf.data.Dataset.from_tensor_slices(
-        (
-            tf.cast(training_df[features].values, tf.float32),
-            tf.cast(training_df['target'].values, tf.int32)
-        )
-    )
-)
+MAX_LEN = 20
 
-for features_tensor, target_tensor in training_dataset:
-    print(f'features:{features_tensor} target:{target_tensor}')
+x = list(data['beginning'])
+y = list(data['true_end'])
+encodings = construct_encodings(data['beginning'], tkzr, max_len=MAX_LEN)
+
+def construct_tfdataset(encodings, y=None):
+    if y:
+        return tf.data.Dataset.from_tensor_slices((dict(encodings), y))
+    else:
+        # this case is used when making predictions on unseen samples after training
+        return tf.data.Dataset.from_tensor_slices(dict(encodings))
+
+
+tfdataset = construct_tfdataset(encodings, y)
+
+TEST_SPLIT = 0.2
+BATCH_SIZE = 2
+
+train_size = int(len(x) * (1-TEST_SPLIT))
+
+tfdataset = tfdataset.shuffle(len(x))
+tfdataset_train = tfdataset.take(train_size)
+tfdataset_test = tfdataset.skip(train_size)
+
+tfdataset_train = tfdataset_train.batch(BATCH_SIZE)
+tfdataset_test = tfdataset_test.batch(BATCH_SIZE)
+

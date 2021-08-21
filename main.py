@@ -8,7 +8,7 @@ from spacy.lang.en import English
 # set seed
 
 # load data
-data = pd.read_pickle("/Users/danielsaggau/PycharmProjects/pythonProject/opinions_data.pkl")
+data = pd.read_pickle("/data/opinions_data.pkl")
 
 
 plain_text = data['plain_text']
@@ -47,7 +47,7 @@ data['year'] = data.year.astype(int)
 # save as txt
 text.to_csv('/Users/danielsaggau/PycharmProjects/pythonProject/output.txt', sep='\n', index=False)
 # load text
-raw_text = io.open("/Users/danielsaggau/PycharmProjects/pythonProject/output.txt", "r", encoding='utf8').read()
+raw_text = io.open("/data/output.txt", "r", encoding='utf8').read()
 spacy.cli.download("en_core_web_sm")
 nlp = spacy.load('en_core_web_sm')
 doc = nlp(raw_text[:1000000])
@@ -78,7 +78,7 @@ for doc in doc.sents:
 
 # improving segmentation by adding exceptions and special cases
 
-length = 50 + 1
+length = 255 + 1
 sequences = list()
 for i in range(length, len(tokens)):
 	# select sequence of tokens
@@ -89,30 +89,14 @@ for i in range(length, len(tokens)):
 	sequences.append(line)
 print('Total Sequences: %d' % len(sequences))
 
+
+
+
+
 # encoding
 tokenizer_gpt = GPT2Tokenizer.from_pretrained("gpt2")
 #inputs = tokenizer_gpt.encode(plain_text, return_tensors = 'tf', truncation = True)
 
-tokenizer_gpt.fit_on_texts(plain_text)
-#vocabulary:
-print(tokenizer.word_index)
-
 plain_text = list(plain_text)
-inputs = tokenizer_gpt(text, truncation=True return_tensors ='tf') # fix max length error
-inputs = text.apply(tokenizer_gpt)
-
-def make_tfdataset(encodings):
-    return tf.data.Dataset.from_tensor_slices(dict(encodings))
-data_tf= make_tfdataset(inputs)
-
-# split
-test = 0.2
-batch_size = 2
-
-train = int(len(plain_text) * 1- test)
-tf_data = inputs.shuffle(len(plain_text)) # check for mistake
-data_train = tf_data.take(train)
-data_test = tf_data.skip(train)
-
 
 # ensure that training and test set dont differ and set unmatched tokens to <unk>
