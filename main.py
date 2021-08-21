@@ -45,42 +45,57 @@ data['year'] = data.date.map(lambda x: x.year)
 data['year'] = data.year.astype(int)
 
 # save as txt
-text.to_csv('/Users/danielsaggau/PycharmProjects/pythonProject/output.txt', sep=' ', index=False)
+text.to_csv('/Users/danielsaggau/PycharmProjects/pythonProject/output.txt', sep='\n', index=False)
 # load text
 raw_text = io.open("/Users/danielsaggau/PycharmProjects/pythonProject/output.txt", "r", encoding='utf8').read()
+spacy.cli.download("en_core_web_sm")
+nlp = spacy.load('en_core_web_sm')
+doc = nlp(raw_text[:1000000])
+# max value
 
-nlp = English()
-nlp.add_pipe('sentencizer')
-doc = nlp(raw_text[:1000000]) # max value
-
-sents_list = []
-for sent in doc.sents:
-   sents_list.append(sent.text)
+doc_sents = [sent for sent in doc.sents]
+token_sents = [token for sent in doc.sents] # bound to try out
+sentences = pd.DataFrame(data={"col1": doc_sents})
+sentences.to_csv('/Users/danielsaggau/PycharmProjects/pythonProject/sentence.csv', sep ="\n")
+print(doc_sents[100])
 
 print(sents_list)
 print([token.text for token in doc])
 
 def make_sequence:
-
-
 # spacy detect sentence boundaries
 #reference
 
 nlp = English()
 doc = nlp(plain_text)
-nlp_plain_text = plain_text.apply(lambda x: nlp(x))
-sentences = [sent.string.strip() for sent in nlp_plain_text]
+
+for doc in doc.sents:
+    sentence_text = []
+    for token in doc:
+        sentence_text.append(token.text)
+    sentence_len = len(sentence_text)
+    sentence_text = join_tokens(sentence_text)
+
+# improving segmentation by adding exceptions and special cases
+
+length = 50 + 1
+sequences = list()
+for i in range(length, len(tokens)):
+	# select sequence of tokens
+	seq = tokens[i-length:i]
+	# convert into a line
+	line = ' '.join(seq)
+	# store
+	sequences.append(line)
+print('Total Sequences: %d' % len(sequences))
 
 # encoding
 tokenizer_gpt = GPT2Tokenizer.from_pretrained("gpt2")
-
 #inputs = tokenizer_gpt.encode(plain_text, return_tensors = 'tf', truncation = True)
-
 
 tokenizer_gpt.fit_on_texts(plain_text)
 #vocabulary:
 print(tokenizer.word_index)
-
 
 plain_text = list(plain_text)
 inputs = tokenizer_gpt(text, truncation=True return_tensors ='tf') # fix max length error
@@ -89,7 +104,6 @@ inputs = text.apply(tokenizer_gpt)
 def make_tfdataset(encodings):
     return tf.data.Dataset.from_tensor_slices(dict(encodings))
 data_tf= make_tfdataset(inputs)
-
 
 # split
 test = 0.2

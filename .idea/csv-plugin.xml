@@ -10,6 +10,20 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="/sent.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="/sentence.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="/sentences.csv">
           <value>
             <Attribute>

@@ -1,18 +1,23 @@
+# This code heavily copies from the sentence segmentation from lazar et al (2019) for comparability
+# load packages
 import io
-from spacy.lang.en import English
 import pandas as pd
 import spacy
-from spacy.lang.en.examples import sentences
+import random
+random.seed(10)
+# download english directory for pycharm
 spacy.cli.download("en_core_web_sm")
 nlp = spacy.load('en_core_web_sm')
-NUM_EXPERIMENTS = 100
+nlp.add_pipe(se)
+# select number of sentences : identical to selection by Lazar
+NUM_EXPERIMENTS = 50
 MIN_SENTENCE_LEN = 10
 NUM_SENTENCES = 4
 BEGINNING_LEN = 1
 
-raw_text = io.open("/Users/danielsaggau/PycharmProjects/pythonProject/output.txt", encoding='utf8',"r").read()
+raw_text = open("/Users/danielsaggau/PycharmProjects/pythonProject/output.txt", "r").read()
+#doc = nlp(raw_text[1000000:2000000])
 doc = nlp(raw_text[:1000000])
-# max value
 
 def join_tokens(text_in):
     text_out = u" " + ' '.join(text_in)
@@ -48,8 +53,10 @@ while True:
             break
     break
 
+
+
 export_to_csv = True
 if export_to_csv:
     output_dict = {"beginning": sentences_beginning, "true_end": sentences_end}
     output_df = pd.DataFrame(output_dict, columns=["beginning", "true_end"])
-    output_df.to_csv('/Users/danielsaggau/PycharmProjects/pythonProject/sentences.csv', index=False, header=True)
+    output_df.to_csv('/Users/danielsaggau/PycharmProjects/pythonProject/sent.csv', index=False, header=True)
