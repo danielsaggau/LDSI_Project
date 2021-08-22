@@ -1,7 +1,8 @@
-tokenizer_gpt = GPT2Tokenizer.from_pretrained("gpt2")
-inputs = tokenizer_gpt.encode(raw_text, return_tensors = 'tf', truncation = True)
-inputs = tokenizer_gpt(text, truncation=True)
-gpt2 = TFGPT2LMHeadModel.from_pretrained("distilgpt2", pad_token_id=tokenizer_gpt.eos_token_id)
+from transformers import DistilBertTokenizer, DistilBertConfig, DistilBertModel, GPT2Tokenizer, TFDistilBertPreTrainedModel, TFGPT2LMHeadModel
+tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
+inputs = tokenizer.encode(raw_text, return_tensors = 'tf', truncation = True)
+inputs = tokenizer(text, truncation=True)
+gpt2 = TFGPT2LMHeadModel.from_pretrained("distilgpt2", pad_token_id=tokenizer.eos_token_id)
 sess = gpt2.start_tf_sess()
 
 gpt2.finetune(sess,

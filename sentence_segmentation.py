@@ -16,7 +16,7 @@ BEGINNING_LEN = 1
 
 raw_text = open("/Users/danielsaggau/PycharmProjects/pythonProject/data/output.txt", "r").read()
 #doc = nlp(raw_text[1000000:2000000])
-doc = nlp(raw_text[:1000000])
+doc = list(nlp(raw_text[:1000000]))
 
 def join_tokens(text_in):
     text_out = u" " + ' '.join(text_in)
@@ -28,6 +28,7 @@ sentences = []
 sentence_group = []
 sentences_beginning = []
 sentences_end = []
+sentence_len = []
 
 while True:
     for sent in doc.sents:
@@ -58,4 +59,4 @@ export_to_csv = True
 if export_to_csv:
     output_dict = {"beginning": sentences_beginning, "true_end": sentences_end}
     output_df = pd.DataFrame(output_dict, columns=["beginning", "true_end"])
-    output_df.to_csv('/Users/danielsaggau/PycharmProjects/pythonProject/sent.csv', index=False, header=True)
+    output_df.to_csv('/Users/danielsaggau/PycharmProjects/pythonProject/tried.csv', index=False, header=True)
