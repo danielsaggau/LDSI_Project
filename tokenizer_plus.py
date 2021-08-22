@@ -36,18 +36,19 @@ with open("/Users/danielsaggau/PycharmProjects/pythonProject/data/file.txt", "r"
     text = f.read()
 
 # splitting data
-
-
 def encode(text):
     return(tokenizer(text['text'], truncation =True, padding ='max_length'))
 
 fr_text_new.map(encode, batched = True)
-
 
 max_length= 256
 data= pd.DataFrame(fr_text_new)
 inputs = tokenizer(text, max_length= 256, padding = True, truncation=True, return_tensors ="tf")
 
 print(inputs)
-
 tokenizer.decode(inputs['input_ids'])
+
+# doesnt work
+
+with open("/Users/danielsaggau/PycharmProjects/pythonProject/file_name.csv", "r", encoding ="utf-8") as f:
+    text = f.read().split("]")
