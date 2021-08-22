@@ -3,13 +3,6 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
-        <entry key="/okey.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
         <entry key="/sent.csv">
           <value>
             <Attribute>
@@ -25,13 +18,6 @@
           </value>
         </entry>
         <entry key="/sentences.csv">
-          <value>
-            <Attribute>
-              <option name="separator" value="," />
-            </Attribute>
-          </value>
-        </entry>
-        <entry key="/working_sentence_split.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />
