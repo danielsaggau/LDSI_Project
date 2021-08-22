@@ -2,6 +2,8 @@
 import numpy as np
 import re
 
+import tokenizer
+
 RE_SPLITTER = '<eos>'
 
 MODEL_MAX_LEN = 256
@@ -49,6 +51,7 @@ def chunk_text(text, num_tok):
 
     return text_chunk
 
-MODEL_MAX_LEN = 256
-
 chunky = chunk_text(text, 256)
+
+import numpy as np
+np.savetxt("file_name.csv", chunky, delimiter=",", fmt='%s')
