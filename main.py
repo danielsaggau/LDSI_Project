@@ -8,7 +8,7 @@ from spacy.lang.en import English
 # set seed
 
 # load data
-data = pd.read_pickle("/data/opinions_data.pkl")
+data = pd.read_pickle("/Users/danielsaggau/PycharmProjects/pythonProject/data/opinions_data.pkl")
 
 
 plain_text = data['plain_text']
@@ -25,6 +25,7 @@ plain_text = plain_text.str.replace("  ","") # removing whitespaces
 
 text = plain_text
     #text = text.str.replace("\n", " ")
+text = text.str.replace("\n"," ")
 text = text.str.replace("FILED", "")
 text = text.str.replace("NOT FOR PUBLICATION", "")
 text = text.str.replace("FOR PUBLICATION", "")
@@ -39,6 +40,9 @@ text = text.str.replace("\uf8fc","")
 text = text.str.replace("\uf8fd","")
 text = text.str.replace("FOR THE NINTH CIRCUIT", "")
 text = text.str.replace("Appeal from the United States District Court", "")
+text = text.str.replace("[*]","")
+text = text.str.replace("\*\*","")
+text = text.str.replace("\n\n","")
 
 data['date'] = pd.to_datetime(data['date_created'])
 data['year'] = data.date.map(lambda x: x.year)
