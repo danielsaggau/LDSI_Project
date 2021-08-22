@@ -1,3 +1,4 @@
+import pandas as pd
 from transformers import DistilBertTokenizer, DistilBertConfig, DistilBertModel, GPT2Tokenizer, TFDistilBertPreTrainedModel, TFGPT2LMHeadModel
 
 with open("/Users/danielsaggau/PycharmProjects/pythonProject/data/output.txt", "r", encoding ="utf-8") as f:
@@ -24,11 +25,32 @@ for sent in sentences:
     fr_text_new.append(sent_new)
     print("After adding tokens: ", sent_new, '\n')
 
-inputs = tokenizer(sentences, max_length= 256, padding = True, truncation=True, return_tensors ="tf",pad_token=eos_token)
+fr_text_new[20:23]
+tokenizer.add_special_tokens({'pad_token': '<eos>'})
+pad_token='<eos>'
+
+with open("data/file.txt", "w") as output:
+    output.write(str(fr_text_new))
+
+with open("/Users/danielsaggau/PycharmProjects/pythonProject/data/file.txt", "r", encoding ="utf-8") as f:
+    text = f.read()
+
+# splitting data
+
+
+def encode(text):
+    return(tokenizer(text['text'], truncation =True, padding ='max_length'))
+
+fr_text_new.map(encode, batched = True)
+
+
+max_length= 256
+data= pd.DataFrame(fr_text_new)
+inputs = tokenizer(text, max_length= 256, padding = True, truncation=True, return_tensors ="tf")
+
+
+
 
 print(inputs)
 
-def tokenizer(sentences):
-    return()
-
-tokenizer.decode(inputs)
+tokenizer.decode(inputs['input_ids'])
