@@ -6,7 +6,7 @@ import tokenizer
 
 RE_SPLITTER = '<eos>'
 
-MODEL_MAX_LEN = 256
+MODEL_MAX_LEN = 256 # needs to be corrected
 
 def chunk_text(text, num_tok):
     text_sent = \
@@ -54,4 +54,4 @@ def chunk_text(text, num_tok):
 chunky = chunk_text(text, 256)
 
 import numpy as np
-np.savetxt("file_name.csv", chunky, delimiter=",", fmt='%s')
+np.savetxt("file_name.csv", chunky, delimiter="]", fmt='%s')

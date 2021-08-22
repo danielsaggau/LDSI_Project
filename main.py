@@ -9,14 +9,11 @@ from spacy.lang.en import English
 
 # load data
 data = pd.read_pickle("/Users/danielsaggau/PycharmProjects/pythonProject/data/opinions_data.pkl")
-
-
 plain_text = data['plain_text']
 author = data['author']
 url = data['download_url']
 html = data['html']
 id = data['id']
-
 
 data_filtered = data[~data['page_count'].isnull()] # remove empty pages
 doc_length = data_filtered['plain_text'].str.len()

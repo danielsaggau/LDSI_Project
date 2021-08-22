@@ -48,9 +48,6 @@ max_length= 256
 data= pd.DataFrame(fr_text_new)
 inputs = tokenizer(text, max_length= 256, padding = True, truncation=True, return_tensors ="tf")
 
-
-
-
 print(inputs)
 
 tokenizer.decode(inputs['input_ids'])
