@@ -109,6 +109,10 @@ def chunk_text(text, num_tok):
 b = ''.join(b)
 chunky = chunk_text(b, 256)
 
+with open("data/chunks.txt", "r") as fp:
+    b = json.load(fp)
+
+
 with open("data/sentence_chunks.json", "w") as fp:
     json.dump(chunky, fp)
 
