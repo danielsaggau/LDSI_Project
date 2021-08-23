@@ -11,7 +11,7 @@ BEGINNING_LEN = 1
 spacy.cli.download("en_core_web_lg")
 nlp = spacy.load('en_core_web_lg')
 
-raw_text = io.open("/Users/danielsaggau/PycharmProjects/pythonProject/data/output.txt", "r", encoding='utf8').read()
+raw_text = io.open("/data/output.txt", "r", encoding='utf8').read()
 doc = nlp(raw_text[:1000000])
 
 def join_tokens(text_in):
