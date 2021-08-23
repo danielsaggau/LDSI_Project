@@ -138,7 +138,7 @@ for ex in examples:
 from transformers import GPT2Config,TFGPT2LMHeadModel
 config = GPT2Config.from_pretrained('distilgpt2')
 
-model = TFGPT2LMHeadModel.from_pretrained('distilgpt2')
+model = TFGPT2LMHeadModel.from_pretrained('distilgpt2', pad_token_id=tokenizer.eos_token)
 # splitting into test and training set
 
 dataset = tf.data.Dataset.from_tensor_slices((inputs, labels))
@@ -156,10 +156,6 @@ dataset_test = dataset.skip(train_size)
 
 dataset_train = dataset_train.batch(BATCH_SIZE)
 dataset_test = dataset_test.batch(BATCH_SIZE)
-
-
-
-
 
 
 BATCH_SIZE = 2
