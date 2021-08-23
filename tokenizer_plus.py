@@ -4,7 +4,6 @@ from transformers import DistilBertTokenizer, DistilBertConfig, DistilBertModel,
 with open("/Users/danielsaggau/PycharmProjects/pythonProject/data/output.txt", "r", encoding ="utf-8") as f:
     text = f.read().split("\n")
 
-map_object = map(str.replace("\*"," "), text)
 
 tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
 import spacy
