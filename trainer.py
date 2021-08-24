@@ -1,7 +1,18 @@
 from transformers import Trainer, TrainingArguments
+from transformers import DistilBertTokenizer, DistilBertConfig, DistilBertModel, GPT2Tokenizer, TFDistilBertPreTrainedModel, TFGPT2LMHeadModel
 from transformers import AutoConfig, AutoModelForCausalLM
-tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
-from transformers import AutoConfig, AutoModelForCausalLM
+#tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
+from transformers import AutoConfig, AutoModelForCausalLM,AutoTokenizer
+
+model_checkpoint = "gpt2"
+tokenizer_checkpoint = "sgugger/gpt2-like-tokenizer"
+
+tokenizer = AutoTokenizer.from_pretrained(tokenizer_checkpoint)
+
+def tokenize_function(examples):
+    return tokenizer(examples["text"])
+
+tokenized_datasets = datasets.map(tokenize_function, batched=True, num_proc=4, remove_columns=["text"])
 
 training_args = TrainingArguments(
     "test-clm",
