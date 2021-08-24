@@ -3,6 +3,13 @@ from transformers import DistilBertTokenizer, DistilBertConfig, DistilBertModel,
 from transformers import AutoConfig, AutoModelForCausalLM
 #tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
 from transformers import AutoConfig, AutoModelForCausalLM,AutoTokenizer
+import json
+from datasets import load_dataset
+
+datasets = load_dataset("text", data_files={"train": 'data/training.txt'})
+
+
+datasets["train"][0]
 
 model_checkpoint = "gpt2"
 tokenizer_checkpoint = "sgugger/gpt2-like-tokenizer"
@@ -25,5 +32,14 @@ training_args = TrainingArguments(
 
 config = AutoConfig.from_pretrained(model_checkpoint)
 model = AutoModelForCausalLM.from_config(config)
+
+trainer = Trainer(
+    model=model,
+    args=training_args,
+    train_dataset=lm_datasets["train"],
+    eval_dataset=lm_datasets["validation"],
+)
+
+trainer.train()
 
 trainer.train()

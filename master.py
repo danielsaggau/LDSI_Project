@@ -50,7 +50,7 @@ for sent in sentences:
 
 
 
-with open("data/training.json", "w") as fp:
+with open("data/training.txt", "w") as fp:
      json.dump(batch, fp)
 
 with open("data/training.txt", "r") as fp:
