@@ -16,13 +16,11 @@ else:
     strategy = tf.distribute.get_strategy()
 print("REPLICAS: ", strategy.num_replicas_in_sync)
 
-
 data = pd.read_json("data/flat_list.json")
 data.to_csv("data/data.csv", index=False)
 data = pd.read_csv("data/data.csv")
 data = Dataset.from_pandas(data)
 data.rename_column("0", "text")
-
 
 EOS_TOKEN = "<|endoftext|>"
 PAD_TOKEN = "<|pad|>"
@@ -34,7 +32,6 @@ tokenizer = AutoTokenizer.from_pretrained(
     max_length=MAX_TOKENS,
     is_split_into_words=True,
 )
-
 
 output = {}
 # texts to numeric vectors of MAX_TOKENS
@@ -74,7 +71,6 @@ data.set_format(type="python", columns=["input_ids", "attention_mask", "labels"]
 data = data.train_test_split(
     test_size=0.20, shuffle=True, seed=1, load_from_cache_file=True
 )
-print(data)
 
 # prepare for use in tensorflow
 train_tensor_inputs = tf.convert_to_tensor(data["train"]["input_ids"])
@@ -98,7 +94,7 @@ test = tf.data.Dataset.from_tensor_slices(
 )
 
 BATCH_SIZE_PER_REPLICA = 28
-EPOCHS = 6
+EPOCHS = 2
 INITAL_LEARNING_RATE = 0.001
 try:
     BATCH_SIZE = BATCH_SIZE_PER_REPLICA * strategy.num_replicas_in_sync
@@ -107,9 +103,7 @@ except NameError as e:
 BUFFER_SIZE = len(train)
 
 # prepare data for consumption
-train_ds = (
-    train.shuffle(BUFFER_SIZE).batch(BATCH_SIZE, drop_remainder=True)
-)
+train_ds = (train.shuffle(BUFFER_SIZE).batch(BATCH_SIZE, drop_remainder=True))
 test_ds = test.batch(BATCH_SIZE, drop_remainder=True)
 
 # Drecreasing learning rate scheduler
@@ -133,16 +127,17 @@ with strategy.scope():
     model.summary()
 
 from datetime import datetime
-    now = datetime.now().strftime("%Y-%m-%d_%H%M")
+now = datetime.now().strftime("%Y-%m-%d_%H%M")
     # Create callbacks
-    callbacks = [
+callbacks = [
         tf.keras.callbacks.EarlyStopping(
             monitor="val_loss", verbose=1, patience=1, restore_best_weights=True
         ),
         tf.keras.callbacks.ModelCheckpoint(
-            "/data/models/" + now + "_GPT2-Model_{epoch:02d}_{val_loss:.4f}.h5",
+            "data/models/" + now + "_GPT2-Model_{epoch:02d}_{val_loss:.4f}.h5",
             monitor="val_loss",
             save_best_only=True,
+            save_format ="tf",
             verbose=1,
         ),
     ]
@@ -159,5 +154,13 @@ hist = model.fit(
     batch_size=BATCH_SIZE,
     epochs=EPOCHS,
     callbacks=callbacks,
+    verbose=1,
+)
+
+hist = model.fit(
+    train_ds,
+    validation_data=test_ds,
+    batch_size=BATCH_SIZE,
+    epochs=1,
     verbose=1,
 )
