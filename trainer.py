@@ -8,22 +8,22 @@ from datasets import load_dataset
 import csv
 import torch
 
+
+
 model_checkpoint = "gpt2"
 tokenizer_checkpoint = "sgugger/gpt2-like-tokenizer"
-
 tokenizer = AutoTokenizer.from_pretrained(tokenizer_checkpoint)
 
 #datasets = load_dataset("text", data_files={"train": 'data/training.txt'})
-
 tokenizer.pad_token = tokenizer.eos_token
+
+
 input_ids = [tokenizer.encode(sent, return_tensors="pt",truncation=True,padding='max_length') for sent in flat_list]
 
 def tokenize_function(examples):
     return tokenizer(examples["text"])
 
 tokenized_datasets = datasets.map(tokenize_function, batched=True, num_proc=4, remove_columns=["text"])
-
-
 
 training_args = TrainingArguments(
     "test-clm",
@@ -38,7 +38,7 @@ model = AutoModelForCausalLM.from_config(config)
 trainer = Trainer(
     model=model,
     args=training_args,
-    train_dataset=lm_datasets["train"],
+    train_dataset=tfdata,
 )
 
 trainer.train()

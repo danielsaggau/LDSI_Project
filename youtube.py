@@ -1,3 +1,4 @@
+from transformers import DistilBertTokenizer, DistilBertConfig, DistilBertModel, GPT2Tokenizer, TFDistilBertPreTrainedModel, TFGPT2LMHeadModel
 https://www.youtube.com/watch?v=6ORnRAz3gnA
 
 with open("data/training.txt", "r") as fp:
@@ -25,3 +26,24 @@ for i in range(0, len(text)- maxlen, step):
 print('nb sequences:', len(sentences))
 
 len(sentences)
+
+############################
+import tensorflow as tf
+import json
+
+with open("data/flat_list.json", 'r') as f:
+    datastore = json.load(f)
+
+trainingsize = 4000
+training_data = datastore[: trainingsize]
+print(len(training_data))
+
+tokenizer = GPT2Tokenizer.from_pretrained("gpt2")
+tokenizer.pad_token = tokenizer.eos_token
+train_embeddings = tokenizer(training_data, truncation = True, padding = True)
+print(len(train_embeddings))
+
+tfdata = tf.data.Dataset.from_tensor_slices(dict(train_embeddings))
+model = TFGPT2LMHeadModel.from_pretrained('distilgpt2', pad_token_id=tokenizer.eos_token)
+optimizer = tf.keras.optimizers.Adam(learning_rate=5e-5)
+model.compile(optimizer = optimizer, loss = model.compute_loss, metrics['accuracy'])

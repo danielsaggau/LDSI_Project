@@ -69,3 +69,13 @@ for i in range(0, n_words - input_seq_length , 1):
 	span_top_tfidf(train_tfidf_skl,
 				   tfidf_features_skl,
 				   random.randint(0, len(train_spans)))
+
+examples = []
+block_size = 100
+for i in range(0, len(tokenized_text)-block_size+1, block_size): # Truncate in block of block_size
+    examples.append(tokenized_text[i:i+block_size])
+
+inputs, labels = [], []
+for ex in examples:
+    inputs.append(ex[:-1])
+    labels.append(ex[1:])
