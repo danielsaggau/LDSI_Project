@@ -2,7 +2,7 @@ import pandas as pd
 from datasets import Dataset, load_dataset, datasets
 import datasets
 from transformers import AutoTokenizer, TFGPT2LMHeadModel
-
+import seaborn as sns
 try:
     tpu = tf.distribute.cluster_resolver.TPUClusterResolver()  # TPU detection
     print("Running on TPU ", tpu.cluster_spec().as_dict()["worker"])
@@ -160,7 +160,24 @@ hist = model.fit(
 hist = model.fit(
     train_ds,
     validation_data=test_ds,
-    batch_size=BATCH_SIZE,
-    epochs=1,
+    batch_size=255,
+    epochs=4,
     verbose=1,
 )
+
+hist.save("model")
+
+# plotting the loss
+
+loss = pd.DataFrame(
+    {"train loss": hist.history["loss"], "test loss": hist.history["val_loss"]}
+).melt()
+loss["epoch"] = loss.groupby("variable").cumcount() + 1
+sns.lineplot(x="epoch", y="value", hue="variable", data=loss).set(
+    title="Model loss",
+    ylabel="",
+    xticks=range(1, loss["epoch"].max() + 1),
+    xticklabels=loss["epoch"].unique(),
+);
+
+
