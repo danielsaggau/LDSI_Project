@@ -1,37 +1,35 @@
-from transformers import GPT2Tokenizer
-import re
-from ignore_random_notes import tokenizer
-import numpy as np
-import json
-
 # removing xml markup, symbols and starting text
 text = open("/Users/danielsaggau/PycharmProjects/pythonProject/data/output.txt", "r").read()
-
-
-from spacy.lang.en import English
-from spacy.attrs import ORTH
 
 nlp = English()
 nlp.add_pipe("sentencizer")
 
 # adding special tokens
-nlp.tokenizer.add_special_case('Fed. Cir.', [{ORTH: 'Fed. Cir.'}])
 nlp.tokenizer.add_special_case('9th Cir.', [{ORTH: '9th Cir.'}])
-nlp.tokenizer.add_special_case('See Fed.', [{ORTH: 'See Fed.'}])
-nlp.tokenizer.add_special_case('IN NO.', [{ORTH: 'IN NO.'}])
-nlp.tokenizer.add_special_case('R.App.', [{ORTH: 'R.App.'}])
-nlp.tokenizer.add_special_case('R. App.', [{ORTH: 'R. App.'}])
-nlp.tokenizer.add_special_case('R. Civ.', [{ORTH: 'R. Civ.'}])
-nlp.tokenizer.add_special_case('Dkt., No.', [{ORTH: 'Dkt., No.'}])
+nlp.tokenizer.add_special_case('Cir.', [{ORTH: 'Cir.'}])
+nlp.tokenizer.add_special_case('Fed.', [{ORTH: 'Fed.'}])
+nlp.tokenizer.add_special_case('NO.', [{ORTH: 'NO.'}])
+nlp.tokenizer.add_special_case('App.', [{ORTH: 'App.'}])
+nlp.tokenizer.add_special_case('Civ.', [{ORTH: 'Civ.'}])
+nlp.tokenizer.add_special_case('No.', [{ORTH: 'No.'}])
 nlp.tokenizer.add_special_case('Dkt.', [{ORTH: 'Dkt.'}])
-nlp.tokenizer.add_special_case('Dkt.,No.', [{ORTH: 'Dkt.,No.'}])
 nlp.tokenizer.add_special_case('et al.', [{ORTH: 'et al.'}])
-nlp.tokenizer.add_special_case('D.C. No.', [{ORTH: 'D.C. No.'}])
-nlp.tokenizer.add_special_case('No. ,', [{ORTH: 'No. ,'}])
+nlp.tokenizer.add_special_case('D.C.', [{ORTH: 'D.C.'}])
 nlp.tokenizer.add_special_case('No.', [{ORTH: 'No.'}])
 nlp.tokenizer.add_special_case('Nos.', [{ORTH: 'Nos.'}])
 nlp.tokenizer.add_special_case('Fed.', [{ORTH: 'Fed.'}])
-
+nlp.tokenizer.add_special_case('U.S.C.', [{ORTH: 'U.S.C.'}])
+nlp.tokenizer.add_special_case(' F.', [{ORTH: 'F.'}])
+nlp.tokenizer.add_special_case(' R.', [{ORTH: 'R.'}])
+nlp.tokenizer.add_special_case(' P.', [{ORTH: 'P.'}])
+nlp.tokenizer.add_special_case(' n.', [{ORTH: ' n.'}])
+nlp.tokenizer.add_special_case(' v.', [{ORTH: ' v.'}]) # versus
+nlp.tokenizer.add_special_case('Univ.', [{ORTH: 'Univ.'}])
+nlp.tokenizer.add_special_case('Jr.', [{ORTH: 'Jr.'}])
+nlp.tokenizer.add_special_case('I.N.S.', [{ORTH: 'I.N.S.'}])
+nlp.tokenizer.add_special_case('OR.', [{ORTH: 'OR.'}])
+nlp.tokenizer.add_special_case('REV.', [{ORTH: 'REV.'}])
+nlp.tokenizer.add_special_case('STAT.', [{ORTH: 'STAT.'}])
 doc = nlp(text[:1000000])
 sentences = list(sents.text for sents in doc.sents) # ensure that we get strings and not spans
 
