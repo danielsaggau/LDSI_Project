@@ -1,5 +1,8 @@
 import matplotlib.pyplot as plt
-#plt.pie(data_filtered['per_curiam'])
+data['date'] = pd.to_datetime(data['date_created'])
+data['year'] = data.date.map(lambda x: x.year)
+data['year'] = data.year.astype(int)
+
 plt.hist(data['year'])
 plt.show()
 

@@ -165,6 +165,8 @@ hist = model.fit(
     verbose=1,
 )
 
+# save model
+
 hist.save("model")
 
 # plotting the loss
@@ -181,3 +183,5 @@ sns.lineplot(x="epoch", y="value", hue="variable", data=loss).set(
 );
 
 
+
+# load model

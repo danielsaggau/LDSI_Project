@@ -1,7 +1,6 @@
 import pandas as pd
 from transformers import DistilBertTokenizer, DistilBertConfig, DistilBertModel, GPT2Tokenizer, TFDistilBertPreTrainedModel, TFGPT2LMHeadModel
 import re
-import tokenizer
 import numpy as np
 import json
 import tensorflow as tf
