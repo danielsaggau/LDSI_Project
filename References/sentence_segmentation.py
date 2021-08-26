@@ -14,7 +14,7 @@ MIN_SENTENCE_LEN = 10
 NUM_SENTENCES = 4
 BEGINNING_LEN = 1
 
-raw_text = open("/Users/danielsaggau/PycharmProjects/pythonProject/data/output.txt", "r").read()
+raw_text = open("/data/output.txt", "r").read()
 #doc = nlp(raw_text[1000000:2000000])
 doc = list(nlp(raw_text[:1000000]))
 

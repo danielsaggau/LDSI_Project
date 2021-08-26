@@ -7,4 +7,4 @@ def read_corpus(split_dir):
             texts.append(text_file.read_text())
     return texts
 
-train_texts= read_corpus('data/flat_list.json')
+train_texts= read_corpus('../data/flat_list.json')

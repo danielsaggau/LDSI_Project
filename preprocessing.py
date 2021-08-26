@@ -40,5 +40,4 @@ text = text.str.replace("MOLLY C. DWYER, CLERK", " ")
 text = text.str.replace("U .S. C O U R T OF APPE ALS", " ")
 text = text.str.replace("  ", "")
 doc_length = text.str.len()
-
 text.to_csv('/Users/danielsaggau/PycharmProjects/pythonProject/data/output.txt', sep='\n', index=False)
