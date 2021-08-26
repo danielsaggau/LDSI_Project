@@ -1,8 +1,7 @@
 # reference : https://discuss.huggingface.co/t/summarization-on-long-documents/920/26
-import numpy as np
 import re
 
-import tokenizer
+from ignore_random_notes import tokenizer
 
 RE_SPLITTER = '<eos>'
 

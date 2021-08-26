@@ -1,7 +1,7 @@
 import pandas as pd
 from transformers import DistilBertTokenizer, DistilBertConfig, DistilBertModel, GPT2Tokenizer, TFDistilBertPreTrainedModel, TFGPT2LMHeadModel
 
-with open("/Users/danielsaggau/PycharmProjects/pythonProject/data/output.txt", "r", encoding ="utf-8") as f:
+with open("/data/output.txt", "r", encoding ="utf-8") as f:
     text = f.read().split("\n")
 
 
@@ -28,10 +28,10 @@ fr_text_new[20:23]
 tokenizer.add_special_tokens({'pad_token': '<eos>'})
 pad_token='<eos>'
 
-with open("data/file.txt", "w") as output:
+with open("../../data/file.txt", "w") as output:
     output.write(str(fr_text_new))
 
-with open("/Users/danielsaggau/PycharmProjects/pythonProject/data/file.txt", "r", encoding ="utf-8") as f:
+with open("/data/file.txt", "r", encoding ="utf-8") as f:
     text = f.read()
 
 # splitting data
@@ -49,5 +49,5 @@ tokenizer.decode(inputs['input_ids'])
 
 # doesnt work
 
-with open("/Users/danielsaggau/PycharmProjects/pythonProject/file_name.csv", "r", encoding ="utf-8") as f:
+with open("/file_name.csv", "r", encoding ="utf-8") as f:
     text = f.read().split("]")

@@ -1,7 +1,7 @@
 from transformers import DistilBertTokenizer, DistilBertConfig, DistilBertModel, GPT2Tokenizer, TFDistilBertPreTrainedModel, TFGPT2LMHeadModel
 https://www.youtube.com/watch?v=6ORnRAz3gnA
 
-with open("data/training.txt", "r") as fp:
+with open("../../data/training.txt", "r") as fp:
     b = json.load(fp)
 b = ''.join(b)
 
@@ -31,7 +31,7 @@ len(sentences)
 import tensorflow as tf
 import json
 
-with open("data/flat_list.json", 'r') as f:
+with open("../../data/flat_list.json", 'r') as f:
     datastore = json.load(f)
 
 trainingsize = 4000

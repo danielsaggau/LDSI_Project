@@ -1,10 +1,9 @@
-import pandas as pd
-from transformers import DistilBertTokenizer, DistilBertConfig, DistilBertModel, GPT2Tokenizer, TFDistilBertPreTrainedModel, TFGPT2LMHeadModel
+from transformers import GPT2Tokenizer
 import re
-import tokenizer
+from ignore_random_notes import tokenizer
 import numpy as np
 import json
-import tensorflow as tf
+
 # removing xml markup, symbols and starting text
 text = open("/Users/danielsaggau/PycharmProjects/pythonProject/data/output.txt", "r").read()
 text = text.replace("plain_text", " ")
@@ -17,7 +16,8 @@ text = text.replace("  ", " ")
 text = text.replace("\uf8fe", " ")
 
 from spacy.lang.en import English
-from spacy.attrs import ORTH, NORM
+from spacy.attrs import ORTH
+
 nlp = English()
 nlp.add_pipe("sentencizer")
 

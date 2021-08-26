@@ -5,7 +5,7 @@ from tensorflow.keras import activations, optimizers, losses
 from transformers import DistilBertTokenizer, TFDistilBertForSequenceClassification
 import io
 
-data = pd.read_csv("/Users/danielsaggau/PycharmProjects/pythonProject/data/working_sentence_split.csv")
+data = pd.read_csv("/data/working_sentence_split.csv")
 MODEL_NAME = 'distilbert-base-uncased'
 tkzr = DistilBertTokenizer.from_pretrained(MODEL_NAME)
 def construct_encodings(x, tkzr, max_len, trucation=True, padding=True):
