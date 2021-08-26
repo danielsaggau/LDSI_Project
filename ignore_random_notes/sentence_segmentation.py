@@ -14,7 +14,7 @@ nlp.add_pipe("sentencizer")
 #nlp.tokenizer.add_special_case('Vet. App.', [{ORTH: 'Vet. App.'}])
 #nlp.tokenizer.add_special_case('Fed. Cir.', [{ORTH: 'Fed. Cir.'}])
 
-raw_text = io.open("/Users/danielsaggau/PycharmProjects/pythonProject/data/output.txt", "r", encoding='utf8').read()
+raw_text = io.open("/data/output.txt", "r", encoding='utf8').read()
 
 #doc = list(nlp.pipe(raw_text, disable=["tagger","ner", "attribute_ruler", "lemmatizer"]))
 doc = list(nlp.pipe(raw_text))

@@ -6,14 +6,7 @@ import json
 
 # removing xml markup, symbols and starting text
 text = open("/Users/danielsaggau/PycharmProjects/pythonProject/data/output.txt", "r").read()
-text = text.replace("plain_text", " ")
-text = text.replace("FILED", "")
-text = text.replace("NOT FOR PUBLICATION", "")
-text = text.replace("\n"," ")
-text = text.replace("**", " ")
-text = text.replace("*", " ")
-text = text.replace("  ", " ")
-text = text.replace("\uf8fe", " ")
+
 
 from spacy.lang.en import English
 from spacy.attrs import ORTH

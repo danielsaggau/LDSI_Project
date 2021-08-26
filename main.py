@@ -76,28 +76,6 @@ for doc in doc.sents:
         sentence_text.append(token.text)
     sentence_len = len(sentence_text)
     sentence_text = join_tokens(sentence_text)
-
-# improving segmentation by adding exceptions and special cases
-
-length = 255 + 1
-sequences = list()
-for i in range(length, len(tokens)):
-	# select sequence of tokens
-	seq = tokens[i-length:i]
-	# convert into a line
-	line = ' '.join(seq)
-	# store
-	sequences.append(line)
-print('Total Sequences: %d' % len(sequences))
-
-
-
-
-
 # encoding
 tokenizer_gpt = GPT2Tokenizer.from_pretrained("gpt2")
-#inputs = tokenizer_gpt.encode(plain_text, return_tensors = 'tf', truncation = True)
-
 plain_text = list(plain_text)
-
-# ensure that training and test set dont differ and set unmatched tokens to <unk>

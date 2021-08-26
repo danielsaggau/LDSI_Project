@@ -32,3 +32,13 @@ def construct_tfdataset(encodings, y=None):
 
 
 tfdataset = construct_tfdataset(encodings, y)
+
+
+text = text.replace("plain_text", " ")
+text = text.replace("FILED", "")
+text = text.replace("NOT FOR PUBLICATION", "")
+text = text.replace("\n"," ")
+text = text.replace("**", " ")
+text = text.replace("*", " ")
+text = text.replace("  ", " ")
+text = text.replace("\uf8fe", " ")
