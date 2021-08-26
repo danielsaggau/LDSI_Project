@@ -6,14 +6,4 @@ data['year'] = data.year.astype(int)
 plt.hist(data['year'])
 plt.show()
 
-
-
-
-
 # create plot for number of tokens per document
-
-
-
-
-# create plot for number of tokens in document
-

@@ -8,7 +8,7 @@ from spacy.lang.en import English
 # set seed
 
 # load data
-data = pd.read_pickle("/Users/danielsaggau/PycharmProjects/pythonProject/data/opinions_data.pkl")
+data = pd.read_pickle("/data/opinions_data.pkl")
 plain_text = data['plain_text']
 author = data['author']
 url = data['download_url']
