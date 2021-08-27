@@ -5,17 +5,23 @@ data['year'] = data.date.map(lambda x: x.year)
 data['year'] = data.year.astype(int)
 
 year = data['year']
-plt.hist(data['year'])
+plt.hist(data['year'], color ='xkcd:azure')
+plt.title('Documents per year', fontdict=dict(size=14))
+plt.gca().set(ylabel='Number of Documents', xlabel='Year')
 plt.show()
 
+# distibution word counts
+
 plt.hist(data['length'], color = 'navy', bins = 1000)
-plt.title('Distribution of Document Word Counts', fontdict=dict(size=22))
-plt.gca().set(xlim=(0, 120000), ylabel='Number of Documents', xlabel='Document Word Count')
+plt.title('Distribution of Document Word Counts', fontdict=dict(size=14))
+plt.gca().set(xlim=(0, 90000),ylim=(0,400), ylabel='Number of Documents', xlabel='Document Word Count')
 plt.show()
+#
 
 well = data.groupby('year').length.mean()
 well_2 = data.groupby('year')..sum()
-plt.plot(well)
+plt.plot(well, color ='xkcd:azure')
+plt.gca().set(xlim=(2010, 2021),ylim=(4000,17500), ylabel='Average Tokens', xlabel='Year')
 fig = plt.figure()
 ax = plt.axes()
 
