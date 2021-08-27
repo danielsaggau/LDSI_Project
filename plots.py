@@ -1,10 +1,10 @@
 import matplotlib.pyplot as plt
+import pandas as pd
 data['date'] = pd.to_datetime(data['date_created'])
 data['year'] = data.date.map(lambda x: x.year)
 data['year'] = data.year.astype(int)
 
 year = data['year']
-
 plt.hist(data['year'])
 plt.show()
 
@@ -14,6 +14,7 @@ plt.gca().set(xlim=(0, 120000), ylabel='Number of Documents', xlabel='Document W
 plt.show()
 
 well = data.groupby('year').length.mean()
+well_2 = data.groupby('year')..sum()
 plt.plot(well)
 fig = plt.figure()
 ax = plt.axes()
@@ -27,3 +28,9 @@ plt.ylim((0,180))
 plt.xlabel('Year')
 plt.ylabel('Number of cases')
 plt.show()
+
+
+
+df = pd.DataFrame(data['per_curiam'])
+plt.bar(data['per_curiam'])
+df = df.apply(pd.value_counts)
