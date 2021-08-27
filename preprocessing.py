@@ -12,9 +12,7 @@ html = data['html']
 id = data['id']
 
 text = data['plain_text'] # subset
-
 # cleaning text file
-
 text = text.replace("plain_text", " ")
 text = text.replace("  ", " ")
 
@@ -39,5 +37,5 @@ text = text.str.replace("\n\n","")
 text = text.str.replace("MOLLY C. DWYER, CLERK", " ")
 text = text.str.replace("U .S. C O U R T OF APPE ALS", " ")
 text = text.str.replace("  ", "")
-doc_length = text.str.len()
+data['length'] = text.str.len()
 text.to_csv('/Users/danielsaggau/PycharmProjects/pythonProject/data/output.txt', sep='\n', index=False)

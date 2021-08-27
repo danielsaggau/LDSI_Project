@@ -24,7 +24,8 @@ data.rename_column("0", "text")
 
 EOS_TOKEN = "<|endoftext|>"
 PAD_TOKEN = "<|pad|>"
-MAX_TOKENS = 128
+MAX_TOKENS = 256 # was 128
+
 tokenizer = AutoTokenizer.from_pretrained(
     "gpt2",
     eos_token=EOS_TOKEN,
@@ -32,6 +33,11 @@ tokenizer = AutoTokenizer.from_pretrained(
     max_length=MAX_TOKENS,
     is_split_into_words=True,
 )
+
+special_cases = ['Cir.','Fed.','No.','NO','App.','Civ.', 'Dkt.', 'et al.','Nos.','U.S.C.','F.',
+                 'R.', 'n.', 'v.', 'Univ.', 'Jr.','I.N.S.', 'OR.', 'REV.', 'STAT.','D.C.']
+
+tokenizer.add_tokens(special_cases, special_tokens = False)
 
 output = {}
 # texts to numeric vectors of MAX_TOKENS
@@ -181,7 +187,5 @@ sns.lineplot(x="epoch", y="value", hue="variable", data=loss).set(
     xticks=range(1, loss["epoch"].max() + 1),
     xticklabels=loss["epoch"].unique(),
 );
-
-
 
 # load model
