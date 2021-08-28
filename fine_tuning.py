@@ -1,8 +1,3 @@
-import pandas as pd
-from datasets import Dataset, load_dataset, datasets
-import datasets
-from transformers import AutoTokenizer, TFGPT2LMHeadModel
-import seaborn as sns
 try:
     tpu = tf.distribute.cluster_resolver.TPUClusterResolver()  # TPU detection
     print("Running on TPU ", tpu.cluster_spec().as_dict()["worker"])
@@ -122,7 +117,7 @@ lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
 # initialize model, use_cache=False important! else wrong shape at loss calc
 with strategy.scope():
     model = TFGPT2LMHeadModel.from_pretrained(
-        "dbmdz/german-gpt2",
+        "gpt2",
         use_cache=False,
         pad_token_id=tokenizer.pad_token_id,
         eos_token_id=tokenizer.eos_token_id,
