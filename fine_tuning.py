@@ -29,13 +29,15 @@ tokenizer = AutoTokenizer.from_pretrained(
     is_split_into_words=True,
 )
 
+# adding further special cases
 special_cases = ['Cir.','Fed.','No.','NO','App.','Civ.', 'Dkt.', 'et al.','Nos.','U.S.C.','F.',
                  'R.', 'n.', 'v.', 'Univ.', 'Jr.','I.N.S.', 'OR.', 'REV.', 'STAT.','D.C.']
 
 tokenizer.add_tokens(special_cases, special_tokens = False)
 
 output = {}
-# texts to numeric vectors of MAX_TOKENS
+
+# defining tokenizer function
 def tokenize_function(examples, tokenizer=tokenizer):
     # Add start and end token to each comment
     examples = [ex + EOS_TOKEN for ex in examples["0"]]
@@ -73,7 +75,7 @@ data = data.train_test_split(
     test_size=0.20, shuffle=True, seed=1, load_from_cache_file=True
 )
 
-# prepare for use in tensorflow
+# convert to tensors and split data
 train_tensor_inputs = tf.convert_to_tensor(data["train"]["input_ids"])
 train_tensor_labels = tf.convert_to_tensor(data["train"]["labels"])
 train_tensor_mask = tf.convert_to_tensor(data["train"]["attention_mask"])
@@ -113,11 +115,11 @@ lr_schedule = tf.keras.optimizers.schedules.ExponentialDecay(
     decay_steps=500,
     decay_rate=0.7,
     staircase=True)
-
+# reference note:
 # initialize model, use_cache=False important! else wrong shape at loss calc
 with strategy.scope():
     model = TFGPT2LMHeadModel.from_pretrained(
-        "gpt2",
+        "distilgpt2",
         use_cache=False,
         pad_token_id=tokenizer.pad_token_id,
         eos_token_id=tokenizer.eos_token_id,
@@ -126,22 +128,6 @@ with strategy.scope():
     optimizer = tf.keras.optimizers.Adam(learning_rate=lr_schedule)
     model.compile(optimizer=optimizer, loss=model.compute_loss)
     model.summary()
-
-from datetime import datetime
-now = datetime.now().strftime("%Y-%m-%d_%H%M")
-    # Create callbacks
-callbacks = [
-        tf.keras.callbacks.EarlyStopping(
-            monitor="val_loss", verbose=1, patience=1, restore_best_weights=True
-        ),
-        tf.keras.callbacks.ModelCheckpoint(
-            "data/models/" + now + "_GPT2-Model_{epoch:02d}_{val_loss:.4f}.h5",
-            monitor="val_loss",
-            save_best_only=True,
-            save_format ="tf",
-            verbose=1,
-        ),
-    ]
 
 steps_per_epoch = int(BUFFER_SIZE // BATCH_SIZE)
 print(
@@ -161,8 +147,8 @@ hist = model.fit(
 hist = model.fit(
     train_ds,
     validation_data=test_ds,
-    batch_size=255,
-    epochs=4,
+    batch_size=BATCH_SIZE,
+    epochs=2,
     verbose=1,
 )
 

@@ -5,6 +5,7 @@ nlp = English()
 nlp.add_pipe("sentencizer")
 
 # adding special tokens
+nlp.tokenizer.add_special_case('§.', [{ORTH: '§.'}])
 nlp.tokenizer.add_special_case('9th Cir.', [{ORTH: '9th Cir.'}])
 nlp.tokenizer.add_special_case('Cir.', [{ORTH: 'Cir.'}])
 nlp.tokenizer.add_special_case('Fed.', [{ORTH: 'Fed.'}])
@@ -99,10 +100,10 @@ def chunk_text(text, num_tok):
 
 b = ''.join(b)
 chunky = chunk_text(b, 256)
-with open("data/chunks.txt", "r") as fp:
-    b = json.load(fp)
-with open("data/sentence_chunks.json", "w") as fp:
-    json.dump(chunky, fp)
+#with open("data/chunks.txt", "r") as fp:
+#    b = json.load(fp)
+#with open("data/sentence_chunks.json", "w") as fp:
+#    json.dump(chunky, fp)
 flat_list = [item for sublist in chunky for item in sublist]
 with open("data/flat_list.json", "w") as fp:
     json.dump(flat_list, fp)

@@ -36,7 +36,7 @@ text = text.str.replace("\*\*","")
 text = text.str.replace("\n\n","")
 text = text.str.replace("MOLLY C. DWYER, CLERK", " ")
 text = text.str.replace("U .S. C O U R T OF APPE ALS", " ")
-text = text.str.replace("  ", "")
+text = text.str.replace("  ", " ")
 data['length'] = text.str.len()
 
 
