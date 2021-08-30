@@ -2,13 +2,27 @@
 
 This is my project on language models for legal text generation.
 
-In the 'data.py' file I sample from the courtlistener bulk file. 
-In the 'cleaning.py' file i preprocess the data. 
-Processing also includes tokenization and creating suitable sequences for our models.
-Due to the quadratic scaling of our transformer based langauge models we need to sample for the raw text files to feed the model a sequences, providing the model a many to one problem.
-Many in this case refers to the many words leading to the word it is supposed to predict.
-'generation.py' includes our fine tuning on the legal data and further also provides a performance benchmark.
+# Loading data into Python as a Dataframe 
 
+You can create the pandas dataframe using the bulk data provided by 'courtlistener'.
+To generate your own dataset see the 'create_dataset.py' file.
+You can adjust the size by setting a different k value.
+I used 50.000 as mentioned in the paper.
 
+# Cleaning 
+
+Further, you can do the cleaning using the 'preprocessing.py' file.
+
+# Tokenization & Chuncks
+
+To create the sentence boundary detection use the 'embedding.py' file.
+
+# Fine Tuning 
+
+See the 'fine_tuning.py' file to fine tune your model.
+
+# Evaluation
+
+ To reproduce the plots in the paper use the 'plots.py' document
 
 
